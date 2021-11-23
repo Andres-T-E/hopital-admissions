@@ -7,3 +7,45 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r Add packages to library}
+
+install.packages("here")
+library(tidyverse)
+library(here)
+
+```
+
+```{r Load Data}
+
+data_dictionary<- read.delim("~/Maestria/Open and reproducible data science/R and GitHub Practice/hospital-admissions/Inputs/pop_demo_data_dictionary.csv")
+
+demographics<- read.csv("~/Maestria/Open and reproducible data science/R and GitHub Practice/hospital-admissions/Inputs/population_demographics.csv")
+
+```
+
+```{r Read Data}
+
+head(demographics)
+head(data_dictionary)
+glimpse(demographics)
+unique(demographics$deprivation)
+unique(demographics$age)
+
+demographics_noNA<- demographics %>% 
+  drop_na() %>%
+  filter(deprivation !="NA")
+glimpse(demographics_noNA)
+unique(demographics_noNA)
+```
+
+
+```{r Describe: median, minimum and maximum}
+
+
+summarize(demographics, median(age), min(age), max(age))
+
+summarize(demographics, median(deprivation), min(deprivation), max(deprivation))
+
+
+```
+
