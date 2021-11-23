@@ -9,7 +9,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r Add packages to library}
 
-install.packages("here")
 library(tidyverse)
 library(here)
 
@@ -39,13 +38,35 @@ unique(demographics_noNA)
 ```
 
 
-```{r Describe: median, minimum and maximum}
+```{r Describe median, minimum and maximum}
 
 
-summarize(demographics, median(age), min(age), max(age))
+summarize(demographics_noNA, median(age), min(age), max(age))
 
-summarize(demographics, median(deprivation), min(deprivation), max(deprivation))
+ 
+demographics_noNA %>% 
+ summarise_at(vars(deprivation),
+               list(min=min, max=max,mean=mean, sd=sd, Q1=~quantile(deprivation, probs=0.25), 
+                    median=median, Q3=~quantile(deprivation, probs=0.75)))
+```
+
+#Questions
 
 
+Are there any problems with the values of age and deprivation?
+
+Age: extreme values that go from 0 to 150, last one certainly a mistake, the first one would need corroboration
+
+
+What is the minimum, maximum and median age for each deprivation level?
+
+
+```{r Describe median, minimum and maximum for deprivation level}
+
+demographics_noNA %>% 
+ group_by(deprivation) %>% 
+ summarise_at(vars(age),
+               list(min=min, max=max,mean=mean, sd=sd, Q1=~quantile(age, probs=0.25), 
+                    median=median, Q3=~quantile(age, probs=0.75)))
 ```
 
